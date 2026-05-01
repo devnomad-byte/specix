@@ -1,123 +1,137 @@
 <div align="center">
 
-# Specix
+# ⬡ Specix
 
 **Spec-driven development for Claude Code**
 
 [中文](./README_CN.md) | English
 
-Define before you build. Verify before you ship.
+**Define before you build. Verify before you ship.**
+
+```bash
+claude plugin marketplace add devnomad-byte/specix
+claude plugin install specix@devnomad-byte-specix
+```
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Modules](https://img.shields.io/badge/modules-14-blueviolet.svg)](./skills/)
+[![Layers](https://img.shields.io/badge/verification_layers-4-9cf.svg)](./README.md#how-it-works)
 
 </div>
 
 ---
 
-## Why Specix?
+## 🎯 Why Specix?
 
-Most wasted effort in software comes not from writing code slowly,
-but from writing the **wrong code quickly**.
-Specix structures your workflow so you solve the right problem,
-build the right solution, and verify with real evidence — not hope.
+> Most wasted effort in software comes not from writing code slowly,
+> but from writing the **wrong code quickly**.
 
 Three core beliefs:
 
-- **Structure Before Action** — spec documents are the source of truth, not an afterthought
-- **Evidence Before Claims** — "it should work" is the most dangerous phrase in engineering
-- **Separation of Concerns** — different questions answered at different stages by different modules
+- 🏗️ **Structure Before Action** — spec documents are the source of truth, not an afterthought
+- 🔬 **Evidence Before Claims** — "it should work" is the most dangerous phrase in engineering
+- 🧩 **Separation of Concerns** — different questions answered at different stages by different modules
 
 ---
 
-## Highlights
+## ✨ Highlights
 
-**Spec-Driven Artifacts**
-Every change produces four documents — charter (why), deltas (what), blueprint (how), lineup (when). These are the source of truth, not conversation memory. Close your terminal, come back tomorrow, Specix picks up exactly where you left off.
+> 📋 **Spec-Driven Artifacts**
+> Every change produces four documents — charter (why), deltas (what), blueprint (how), lineup (when).
+> Source of truth lives on disk, not in conversation memory.
 
-**Four Verification Layers**
-Progressive verification where each layer answers a different question: Did this task follow the spec? Does the code run? Does it match the spec and solve the real problem? Is it well-crafted and secure?
+> 🔍 **Four Verification Layers**
+> Micro → Functional → Semantic → Quality. Each layer answers a different question.
 
-**Git-Optional**
-12 of 14 modules work without git. Local development, prototypes, learning projects — all get the full spec-driven workflow. Only `isolate` (worktree) and `branch` (integration) require git.
+> 🔓 **Git-Optional**
+> 12 of 14 modules work without git. Local dev, prototypes, learning projects — full workflow, no repo required.
 
-**Executable Lineup**
-Tasks include exact file paths, complete code blocks, and runnable verify commands. No "TBD", no "fill in later", no "similar to X". Every step is zero-ambiguity and directly implementable.
+> 🎯 **Executable Lineup**
+> Exact file paths, complete code blocks, runnable verify commands. Zero ambiguity, zero placeholders.
 
-**Cross-Session Recovery**
-State lives on disk in `.specix/`, not in chat history. A partially completed lineup is a resumable checkpoint — the next session reads the checkboxes and continues.
+> 💾 **Cross-Session Recovery**
+> State on disk, not in chat. Close terminal, return tomorrow, resume exactly where you left off.
 
-**Self-Learning**
-`insights.jsonl` accumulates patterns, pitfalls, and project-specific conventions across sessions. Gateway reads these on startup and improves routing decisions over time.
+> 🧠 **Self-Learning**
+> `insights.jsonl` accumulates patterns and pitfalls across sessions. Gateway gets smarter over time.
 
-**Anti-AI-Default Canvas**
-The frontend design module refuses generic patterns — purple gradients, Inter/Roboto fonts, pill buttons, "clean and modern" as a goal. Every generation commits to a deliberate aesthetic direction.
+> 🎨 **Anti-AI-Default Canvas**
+> Frontend design module refuses generic patterns — purple gradients, Inter/Roboto, pill buttons. Deliberate aesthetics only.
 
-**Dual Triggering**
-Natural language matching via module descriptions, or explicit slash commands like `/specix:build`. Describe what you want in plain words, or invoke by name.
+> ⚡ **Dual Triggering**
+> Natural language matching via descriptions, or `/specix:build` slash commands. Your choice.
 
 ---
 
-## The Workflow
+## 🔄 The Workflow
 
 ```
-Idea ──► spark ──► draft ──► build ──► proof ──► audit ──► lens ──► branch ──► vault
- explore    charter    lineup    run      verify    spec      review    integrate   archive
-            deltas              tasks    evidence  check     quality
-            blueprint
+                        ┌──────────────────────────────────────────────────────────────────────┐
+                        │                       Specix Full Pipeline                          │
+                        └──────────────────────────────────────────────────────────────────────┘
+
+   ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐
+   │         │     │         │     │         │     │         │     │         │     │         │     │         │     │         │
+   │  spark  │────►│  draft  │────►│  build  │────►│  proof  │────►│  audit  │────►│  lens   │────►│ branch  │────►│  vault  │
+   │         │     │         │     │         │     │         │     │         │     │         │     │         │     │         │
+   └─────────┘     └─────────┘     └─────────┘     └─────────┘     └─────────┘     └─────────┘     └─────────┘     └─────────┘
+    EXPLORE         SPECIFY          EXECUTE          VERIFY           AUDIT           REVIEW         INTEGRATE        ARCHIVE
+   Socratic QA    4 artifacts     grid dispatch    fresh evidence   spec + need     code quality     merge/PR       delta merge
+   light + deep   charter/deltas   workers+review   run commands     traceback       specialist       lifecycle       self-learn
+                   bluep./lineup                    read output      3-level                                         insights
 ```
 
-1. **Explore** — `specix:spark` Socratic questioning to clarify and confirm direction
-2. **Specify** — `specix:draft` produces charter, deltas, blueprint, and lineup
-3. **Build** — `specix:build` validates lineup, dispatches workers through `specix:grid`
-4. **Verify** — `specix:proof` runs commands and demands fresh evidence
-5. **Audit** — `specix:audit` dual-layer check: spec compliance + real-need traceback
-6. **Review** — `specix:lens` holistic code quality with specialist lenses
-7. **Integrate** — `specix:branch` merge, PR, keep, or discard
-8. **Archive** — `specix:vault` merges deltas into master specs, records learnings
+---
+
+## 📦 Module Map
+
+**14 modules** across **4 layers**. All called with `specix:` prefix.
+
+### 🌊 Flow — Orchestrating the Pipeline
+
+| Module | Type | Purpose |
+|--------|:----:|---------|
+| [`specix:gateway`](./skills/gateway/SKILL.md) | Flow | Session bootstrap — detects environment, selects development path |
+| [`specix:draft`](./skills/flow/draft/SKILL.md) | Flow | Produces all specification artifacts: charter, deltas, blueprint, lineup |
+| [`specix:build`](./skills/flow/build/SKILL.md) | Flow | Validates lineup is executable, dispatches workers via grid |
+| [`specix:audit`](./skills/flow/audit/SKILL.md) | Flow | Dual-layer verification: spec compliance + real-need traceback |
+| [`specix:vault`](./skills/flow/vault/SKILL.md) | Flow | Archives change, merges deltas into master specs |
+
+### 🔨 Craft — Shaping the Work
+
+| Module | Type | Purpose |
+|--------|:----:|---------|
+| [`specix:spark`](./skills/craft/spark/SKILL.md) | Clay | Exploration + Socratic ideation (light mode / deep mode) |
+| [`specix:probe`](./skills/craft/probe/SKILL.md) | Iron | Systematic debugging: root cause → pattern → hypothesis → fix |
+| [`specix:proof`](./skills/craft/proof/SKILL.md) | Iron | Iron gate — run commands, read output, confirm before claiming done |
+
+### ⚡ Engine — Executing the Build
+
+| Module | Type | Purpose |
+|--------|:----:|---------|
+| [`specix:grid`](./skills/engine/grid/SKILL.md) | Iron | Multi-agent parallel dispatch with per-task review |
+| [`specix:redgreen`](./skills/engine/redgreen/SKILL.md) | Iron | Test-driven discipline: failing test → implement → refactor |
+| [`specix:lens`](./skills/engine/lens/SKILL.md) | Flow | Whole-change code review + specialist lenses (security / performance / architecture) |
+| [`specix:branch`](./skills/engine/branch/SKILL.md) | Flow | Branch lifecycle: merge, PR, keep, or discard *(git required)* |
+| [`specix:isolate`](./skills/engine/isolate/SKILL.md) | Flow | Git worktree isolation for feature work *(git required)* |
+
+### 🎨 Studio — Domain-Specific Guidance
+
+| Module | Type | Purpose |
+|--------|:----:|---------|
+| [`specix:canvas`](./skills/studio/canvas/SKILL.md) | Clay | Front-end design with anti-default aesthetics (on-demand) |
+
+### Module Types
+
+| Type | Icon | Meaning | Modules |
+|------|:----:|---------|---------|
+| **Iron** | 🛡️ | Rigid. Follow exactly. No shortcuts. | `proof` `probe` `redgreen` `grid` |
+| **Clay** | 🏺 | Flexible. Adapt to context. | `spark` `canvas` |
+| **Flow** | 🌊 | Pipeline. Execute in order. | `draft` `build` `audit` `vault` `lens` `branch` `isolate` |
 
 ---
 
-## Module Map
-
-14 modules across 4 layers. All called with `specix:` prefix.
-
-### Flow — Orchestrating the Pipeline
-
-| Module | Purpose |
-|--------|---------|
-| [`specix:gateway`](./skills/gateway/SKILL.md) | Session bootstrap — detects environment, selects development path |
-| [`specix:draft`](./skills/flow/draft/SKILL.md) | Produces all specification artifacts: charter, deltas, blueprint, lineup |
-| [`specix:build`](./skills/flow/build/SKILL.md) | Validates lineup is executable, dispatches workers via grid |
-| [`specix:audit`](./skills/flow/audit/SKILL.md) | Dual-layer verification: spec compliance + real-need traceback |
-| [`specix:vault`](./skills/flow/vault/SKILL.md) | Archives change, merges deltas into master specs |
-
-### Craft — Shaping the Work
-
-| Module | Purpose |
-|--------|---------|
-| [`specix:spark`](./skills/craft/spark/SKILL.md) | Exploration + Socratic ideation (light mode / deep mode) |
-| [`specix:probe`](./skills/craft/probe/SKILL.md) | Systematic debugging: root cause → pattern → hypothesis → fix |
-| [`specix:proof`](./skills/craft/proof/SKILL.md) | Iron gate — run commands, read output, confirm before claiming done |
-
-### Engine — Executing the Build
-
-| Module | Purpose |
-|--------|---------|
-| [`specix:grid`](./skills/engine/grid/SKILL.md) | Multi-agent parallel dispatch with per-task review |
-| [`specix:redgreen`](./skills/engine/redgreen/SKILL.md) | Test-driven discipline: failing test → implement → refactor |
-| [`specix:lens`](./skills/engine/lens/SKILL.md) | Whole-change code review + specialist lenses (security / performance / architecture) |
-| [`specix:branch`](./skills/engine/branch/SKILL.md) | Branch lifecycle: merge, PR, keep, or discard *(git required)* |
-| [`specix:isolate`](./skills/engine/isolate/SKILL.md) | Git worktree isolation for feature work *(git required)* |
-
-### Studio — Domain-Specific Guidance
-
-| Module | Purpose |
-|--------|---------|
-| [`specix:canvas`](./skills/studio/canvas/SKILL.md) | Front-end design with anti-default aesthetics (on-demand) |
-
----
-
-## Development Paths
+## 🛤️ Development Paths
 
 Gateway detects your environment and picks the right path automatically.
 
@@ -127,15 +141,15 @@ User request
     ▼
 [specix:gateway] evaluates scope
     │
-    ├─ Large change  ──► Full path
-    ├─ Medium change ──► Lean path
-    ├─ Bug fix       ──► Fix path
-    └─ Trivial edit  ──► Direct
+    ├─ 🔴 Large change  ──► Full path
+    ├─ 🟡 Medium change ──► Lean path
+    ├─ 🟠 Bug fix       ──► Fix path
+    └─ 🟢 Trivial edit  ──► Direct
 ```
 
 ### With Git
 
-```
+```bash
 Full:   spark → draft → isolate → build → proof → audit → lens → branch → vault
 Lean:   draft → build → proof → audit → lens → branch → vault
 Fix:    probe → redgreen → proof → (lens + branch if large)
@@ -143,7 +157,7 @@ Fix:    probe → redgreen → proof → (lens + branch if large)
 
 ### Without Git
 
-```
+```bash
 Full:   spark → draft → build → proof → audit → lens → vault
 Lean:   draft → build → proof → audit → lens → vault
 Fix:    probe → redgreen → proof → (lens if large)
@@ -151,27 +165,34 @@ Fix:    probe → redgreen → proof → (lens if large)
 
 ### Independent Use
 
-```
+```bash
 Explore:  specix:spark (light mode) — anytime, pure thinking, no files
 Direct:   just do it → specix:proof (optional)
 ```
 
 ---
 
-## How It Works
+## ⚙️ How It Works
 
-### The Four Verification Layers
+### 🔍 The Four Verification Layers
 
 Every change goes through progressive verification — each layer answers a different question:
 
-| Layer | Module | Question |
-|-------|--------|----------|
-| Micro | `grid` reviewer | Did this task implement the spec correctly? |
-| Functional | `proof` | Does the code actually run? |
-| Semantic | `audit` | Does it match the spec? Does it solve the real problem? |
-| Quality | `lens` | Is the code well-crafted? Secure? Performant? |
+```
+  ┌─────────────────────────────────────────────────────┐
+  │  Quality   │  lens        │  Is the code good?      │
+  ├─────────────────────────────────────────────────────┤
+  │  Semantic   │  audit       │  Does it solve the      │
+  │             │              │  real problem?           │
+  ├─────────────────────────────────────────────────────┤
+  │  Functional │  proof       │  Does it run?            │
+  ├─────────────────────────────────────────────────────┤
+  │  Micro      │  grid reviewer│ Did this task follow    │
+  │             │              │  the spec?               │
+  └─────────────────────────────────────────────────────┘
+```
 
-### Specification Artifacts
+### 📋 Specification Artifacts
 
 Each change produces four artifacts in `.specix/changes/<name>/`:
 
@@ -182,7 +203,7 @@ blueprint.md    → How: technical design, key decisions
 lineup.md       → When: ordered task checklist with executable steps
 ```
 
-### Self-Learning
+### 🧠 Self-Learning
 
 Specix records observations in `.specix/learn/insights.jsonl` during archival.
 Over time it accumulates what worked, what didn't, and project-specific conventions.
@@ -190,29 +211,41 @@ Gateway reads these insights at startup and improves routing decisions.
 
 ---
 
-## Installation
+## 📥 Installation
 
-### npm (recommended)
+### From Claude Code session
 
-```bash
-npm install specix
+```
+/plugin marketplace add devnomad-byte/specix
+/plugin install specix@devnomad-byte-specix
 ```
 
-### Project-level
+### From terminal
 
-Clone or copy into your project, then add to `.claude/settings.json`:
+```bash
+claude plugin marketplace add devnomad-byte/specix
+claude plugin install specix@devnomad-byte-specix
+```
+
+### Scopes
+
+| Scope | Effect |
+|-------|--------|
+| `--scope user` 🏠 | Available in all your projects (default) |
+| `--scope project` 👥 | Shared with collaborators via `.claude/settings.json` |
+| `--scope local` 🔒 | Only for you in this repo |
+
+### Manual
+
+Clone the repo and add to `.claude/settings.json`:
 
 ```json
 { "enabledPlugins": { "specix": true } }
 ```
 
-### Global
-
-Place in `~/.claude/plugins/` and enable in user-level settings.
-
 ---
 
-## Configuration
+## 🔧 Configuration
 
 Specix reads `.specix/project.yaml` in your project root. Created automatically on first `specix:draft`.
 
@@ -237,16 +270,8 @@ rules:
 
 ---
 
-## Module Types
+<div align="center">
 
-| Type | Meaning | Modules |
-|------|---------|---------|
-| **Iron** | Rigid. Follow exactly. No shortcuts. | `proof`, `probe`, `redgreen`, `grid` |
-| **Clay** | Flexible. Adapt to context. | `spark`, `canvas` |
-| **Flow** | Pipeline. Execute in order. | `draft`, `build`, `audit`, `vault`, `lens`, `branch`, `isolate` |
+[MIT License](./LICENSE) · Made with ⬡ for Claude Code
 
----
-
-## License
-
-[MIT](./LICENSE)
+</div>
