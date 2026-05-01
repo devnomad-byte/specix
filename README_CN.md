@@ -211,19 +211,49 @@ Gateway 每次启动读取这些积累，持续改进路由决策。
 
 ## 📥 安装
 
-### 在 Claude Code 会话中
+三种安装方式——选一个适合你的。
+
+### 1. 插件市场 *（推荐）*
+
+将本仓库添加为市场源，然后安装：
 
 ```
 /plugin marketplace add devnomad-byte/specix
 /plugin install specix@devnomad-byte-specix
 ```
 
-### 在终端中
+或在终端中：
 
 ```bash
 claude plugin marketplace add devnomad-byte/specix
 claude plugin install specix@devnomad-byte-specix
 ```
+
+### 2. 官方社区 *（即将上线）*
+
+发布到 Anthropic 官方市场后：
+
+```
+/plugin install specix@claude-plugins-official
+```
+
+### 3. 手动克隆 *（最可靠）*
+
+```bash
+git clone https://github.com/devnomad-byte/specix.git
+```
+
+然后在项目的 `.claude/settings.json` 中添加：
+
+```json
+{
+  "enabledPlugins": {
+    "specix": "/absolute/path/to/specix"
+  }
+}
+```
+
+或全局设置在 `~/.claude/settings.json` 中。
 
 ### 安装范围
 
@@ -232,14 +262,6 @@ claude plugin install specix@devnomad-byte-specix
 | `--scope user` 🏠 | 所有项目可用（默认） |
 | `--scope project` 👥 | 通过 `.claude/settings.json` 与协作者共享 |
 | `--scope local` 🔒 | 仅在当前仓库中可用 |
-
-### 手动安装
-
-克隆仓库并添加到 `.claude/settings.json`：
-
-```json
-{ "enabledPlugins": { "specix": true } }
-```
 
 ---
 

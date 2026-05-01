@@ -213,19 +213,49 @@ Gateway reads these insights at startup and improves routing decisions.
 
 ## 📥 Installation
 
-### From Claude Code session
+Three ways to install — pick the one that fits you.
+
+### 1. Plugin Marketplace *(recommended)*
+
+Add this repo as a marketplace source, then install:
 
 ```
 /plugin marketplace add devnomad-byte/specix
 /plugin install specix@devnomad-byte-specix
 ```
 
-### From terminal
+Or from terminal:
 
 ```bash
 claude plugin marketplace add devnomad-byte/specix
 claude plugin install specix@devnomad-byte-specix
 ```
+
+### 2. Official Community *(coming soon)*
+
+Once published to the Anthropic official marketplace:
+
+```
+/plugin install specix@claude-plugins-official
+```
+
+### 3. Manual Clone *(most reliable)*
+
+```bash
+git clone https://github.com/devnomad-byte/specix.git
+```
+
+Then add to your project's `.claude/settings.json`:
+
+```json
+{
+  "enabledPlugins": {
+    "specix": "/absolute/path/to/specix"
+  }
+}
+```
+
+Or globally in `~/.claude/settings.json`.
 
 ### Scopes
 
@@ -234,14 +264,6 @@ claude plugin install specix@devnomad-byte-specix
 | `--scope user` 🏠 | Available in all your projects (default) |
 | `--scope project` 👥 | Shared with collaborators via `.claude/settings.json` |
 | `--scope local` 🔒 | Only for you in this repo |
-
-### Manual
-
-Clone the repo and add to `.claude/settings.json`:
-
-```json
-{ "enabledPlugins": { "specix": true } }
-```
 
 ---
 
