@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Specix session loader — injects the gateway module into Claude Code context.
+
+set -euo pipefail
+
+# Determine plugin root directory
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+# Read gateway module content
+gateway_content=$(cat "${PLUGIN_ROOT}/skills/gateway/SKILL.md" 2>&1 || echo "Error reading gateway module")
+
+# Escape string for JSON embedding — handles all characters that break JSON strings
+escape_for_json() {
+    local s="$1"
+    s="${s//\\/\\\\}"       # Backslash first (before adding more)
+    s="${s//\"/\\\"}"       # Double quotes
+    s="${s//$'\n'/\\n}"     # Newlines
+    s="${s//$'\r'/\\r}"     # Carriage returns
+    s="${s//$'\t'/\\t}"     # Tabs
+    s="${s//\`/\\u0060}"    # Backticks (JSON unicode escape)
+    s="${s//\$/\\u0024}"    # Dollar signs (prevent variable expansion artifacts)
+    printf '%s' "$s"
+}
+
+gateway_escaped=$(escape_for_json "$gateway_content")
+session_context="<EXTREMELY_IMPORTANT>\nSpecix loaded.\n\n**Below is the full content of the gateway module (specix:gateway) — your introduction to using Specix modules. For all other modules, use the Skill tool:**\n\n${gateway_escaped}\n</EXTREMELY_IMPORTANT>"
+
+# Output context injection as JSON for Claude Code
+printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context"
+
+exit 0

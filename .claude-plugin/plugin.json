@@ -1,0 +1,5 @@
+{
+  "name": "specix",
+  "version": "1.0.0",
+  "description": "Structured spec-driven development for Claude Code — workflow orchestration, execution discipline, and domain modules"
+}

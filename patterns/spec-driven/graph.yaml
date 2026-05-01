@@ -1,0 +1,77 @@
+name: driven
+version: 1
+description: Specix default workflow — charter to implementation through structured artifacts
+
+artifacts:
+  - id: charter
+    generates: charter.md
+    description: Why this change exists and what it affects
+    template: blanks/charter.md
+    instruction: |
+      Create the charter that establishes WHY this change is needed.
+      Sections:
+      - Motivation: 1-2 sentences on the problem or opportunity
+      - Scope: Bullet list of specific changes
+      - Reach: Affected code, APIs, dependencies, or systems
+      Keep it concise. Focus on "why" not "how".
+    requires: []
+
+  - id: deltas
+    generates: "deltas/**/*.md"
+    description: Incremental specification changes
+    template: blanks/delta.md
+    instruction: |
+      Create delta specification files that define WHAT the system should do differently.
+      One delta file per capability. Operations:
+      - NEW: Brand new capabilities (full requirement with scenarios)
+      - EDIT: Changed behavior (full replacement content)
+      - DROP: Deprecated features (name + reason + migration)
+      - RENAME: Name changes (FROM:/TO: format)
+      Each requirement uses SHALL/MUST language.
+      Each scenario uses WHEN/THEN format.
+    requires:
+      - charter
+
+  - id: blueprint
+    generates: blueprint.md
+    description: Technical design document
+    template: blanks/blueprint.md
+    instruction: |
+      Create the blueprint that explains HOW to implement the change.
+      Sections:
+      - Context: Background, current state, constraints
+      - Goals / Non-Goals: What this achieves and excludes
+      - Decisions: Key technical choices with rationale
+      - Risks: Known limitations and trade-offs
+      Focus on architecture and approach.
+    requires:
+      - charter
+
+  - id: lineup
+    generates: lineup.md
+    description: Implementation task checklist — executable steps with file paths and verification commands
+    template: blanks/lineup.md
+    instruction: |
+      Create the lineup as a directly executable task list.
+      Each task must contain enough detail for a worker to implement without further interpretation.
+
+      Format per task:
+      - ### N.M Task Title (under ## Group heading)
+      - **Files:** list every file to create or modify (with line ranges)
+      - **Steps:** checkbox items (- [ ] **Step K:** action) with exact code in fenced blocks
+      - **Verify:** run command + expected output
+      - No placeholders: no TBD, TODO, "fill in later", "similar to X"
+
+      Rules:
+      - Group under ## numbered headings by dependency order
+      - Each step = 2-5 minutes of focused work
+      - Every file path must be exact, every command must be runnable
+      - Order tasks so dependencies come first
+      - Reference deltas for what, blueprint for how
+    requires:
+      - deltas
+      - blueprint
+
+build:
+  requires: [lineup]
+  tracks: lineup.md
