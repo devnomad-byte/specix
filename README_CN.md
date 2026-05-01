@@ -229,9 +229,9 @@ claude plugin marketplace add devnomad-byte/specix
 claude plugin install specix@devnomad-byte-specix
 ```
 
-### 2. 官方社区 *（即将上线）*
+### 2. 官方目录 *（审核中）*
 
-发布到 Anthropic 官方市场后：
+已提交至 Anthropic 官方插件目录，审核通过后即可使用：
 
 ```
 /plugin install specix@claude-plugins-official

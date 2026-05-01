@@ -231,9 +231,9 @@ claude plugin marketplace add devnomad-byte/specix
 claude plugin install specix@devnomad-byte-specix
 ```
 
-### 2. Official Community *(coming soon)*
+### 2. Official Directory *(under review)*
 
-Once published to the Anthropic official marketplace:
+Currently under review by the Anthropic plugin directory team. Once approved:
 
 ```
 /plugin install specix@claude-plugins-official
